@@ -1,4 +1,4 @@
-﻿namespace RideWithMe.Infrastructure.Interfaces
+﻿namespace Taht.Infrastructure.Interfaces
 {
     public class BaseSearchObject 
     {
