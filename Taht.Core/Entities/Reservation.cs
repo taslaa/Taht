@@ -10,6 +10,7 @@
 
         public DateTime BookingTime { get; set; }
         public int GuestCount { get; set; }
+        public ReservationStatus Status { get; set; }
 
         public ICollection<Review> Reviews { get; set; } = null!;
     }

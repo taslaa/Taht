@@ -1,4 +1,4 @@
-﻿namespace Taht.Core.Dtos.Photo
+﻿namespace Taht.Core
 {
     public class PhotoDto : BaseDto
     {
