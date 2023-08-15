@@ -12,6 +12,24 @@ namespace Taht.Infrastructure.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "Appointments",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    AppointmentDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    AppointmentTime = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IsBooked = table.Column<bool>(type: "bit", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ModifiedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Appointments", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Photos",
                 columns: table => new
                 {
@@ -83,8 +101,10 @@ namespace Taht.Infrastructure.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<int>(type: "int", nullable: false),
                     ServiceId = table.Column<int>(type: "int", nullable: false),
-                    BookingTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    AppointmentId = table.Column<int>(type: "int", nullable: false),
+                    ReservationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     GuestCount = table.Column<int>(type: "int", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
@@ -92,6 +112,12 @@ namespace Taht.Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Reservations", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Reservations_Appointments_AppointmentId",
+                        column: x => x.AppointmentId,
+                        principalTable: "Appointments",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Reservations_Services_ServiceId",
                         column: x => x.ServiceId,
@@ -139,9 +165,20 @@ namespace Taht.Infrastructure.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "Appointments",
+                columns: new[] { "Id", "AppointmentDate", "AppointmentTime", "CreatedAt", "IsBooked", "ModifiedAt" },
+                values: new object[] { 1, new DateTime(2023, 2, 1, 0, 0, 0, 0, DateTimeKind.Local), "12:00", new DateTime(2023, 2, 1, 0, 0, 0, 0, DateTimeKind.Local), true, null });
+
+            migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "CreatedAt", "Email", "FirstName", "LastName", "ModifiedAt", "PasswordHash", "PasswordSalt", "PhoneNumber", "ProfilePhotoId", "Role" },
                 values: new object[] { 1, new DateTime(2023, 2, 1, 0, 0, 0, 0, DateTimeKind.Local), "site.admin@ridewithme.com", "Site", "Admin", null, "b4I5yA4Mp+0Pg1C3EsKU17sS13eDExGtBjjI07Vh/JM=", "1wQEjdSFeZttx6dlvEDjOg==", "38761123456", null, 1 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reservations_AppointmentId",
+                table: "Reservations",
+                column: "AppointmentId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Reservations_ServiceId",
@@ -177,6 +214,9 @@ namespace Taht.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "Reservations");
+
+            migrationBuilder.DropTable(
+                name: "Appointments");
 
             migrationBuilder.DropTable(
                 name: "Services");

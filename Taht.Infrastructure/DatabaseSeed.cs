@@ -11,6 +11,7 @@ namespace Taht.Infrastructure
         private void SeedData(ModelBuilder modelBuilder)
         {
             SeedUsers(modelBuilder);
+            SeedAppointments(modelBuilder);
         }
 
 
@@ -27,6 +28,20 @@ namespace Taht.Infrastructure
                     PasswordHash = "b4I5yA4Mp+0Pg1C3EsKU17sS13eDExGtBjjI07Vh/JM=", 
                     PasswordSalt = "1wQEjdSFeZttx6dlvEDjOg==",
                     PhoneNumber = "38761123456",
+                    CreatedAt = _dateTime,
+                    ModifiedAt = null
+                });
+        }
+
+        private void SeedAppointments(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Appointment>().HasData(
+                new Appointment
+                {
+                    Id = 1,
+                    AppointmentDate = _dateTime,
+                    AppointmentTime = "12:00",
+                    IsBooked= true,
                     CreatedAt = _dateTime,
                     ModifiedAt = null
                 });

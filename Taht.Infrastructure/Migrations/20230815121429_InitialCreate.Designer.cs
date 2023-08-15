@@ -12,7 +12,7 @@ using Taht.Infrastructure;
 namespace Taht.Infrastructure.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20230814124214_InitialCreate")]
+    [Migration("20230815121429_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -24,6 +24,51 @@ namespace Taht.Infrastructure.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("Taht.Core.Appointment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("AppointmentDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("AppointmentTime")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsBooked")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<DateTime?>("ModifiedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Appointments");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            AppointmentDate = new DateTime(2023, 2, 1, 0, 0, 0, 0, DateTimeKind.Local),
+                            AppointmentTime = "12:00",
+                            CreatedAt = new DateTime(2023, 2, 1, 0, 0, 0, 0, DateTimeKind.Local),
+                            IsBooked = true,
+                            IsDeleted = false
+                        });
+                });
 
             modelBuilder.Entity("Taht.Core.Photo", b =>
                 {
@@ -65,8 +110,8 @@ namespace Taht.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("BookingTime")
-                        .HasColumnType("datetime2");
+                    b.Property<int>("AppointmentId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -82,13 +127,22 @@ namespace Taht.Infrastructure.Migrations
                     b.Property<DateTime?>("ModifiedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateTime>("ReservationDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("ServiceId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Status")
                         .HasColumnType("int");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AppointmentId")
+                        .IsUnique();
 
                     b.HasIndex("ServiceId");
 
@@ -251,6 +305,12 @@ namespace Taht.Infrastructure.Migrations
 
             modelBuilder.Entity("Taht.Core.Reservation", b =>
                 {
+                    b.HasOne("Taht.Core.Appointment", "Appointment")
+                        .WithOne("Reservation")
+                        .HasForeignKey("Taht.Core.Reservation", "AppointmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Taht.Core.Service", "Service")
                         .WithMany("Reservations")
                         .HasForeignKey("ServiceId")
@@ -262,6 +322,8 @@ namespace Taht.Infrastructure.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Appointment");
 
                     b.Navigation("Service");
 
@@ -294,6 +356,12 @@ namespace Taht.Infrastructure.Migrations
                         .HasForeignKey("ProfilePhotoId");
 
                     b.Navigation("ProfilePhoto");
+                });
+
+            modelBuilder.Entity("Taht.Core.Appointment", b =>
+                {
+                    b.Navigation("Reservation")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Taht.Core.Photo", b =>

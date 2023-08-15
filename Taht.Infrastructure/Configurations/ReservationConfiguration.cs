@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 using Taht.Core;
 
@@ -20,7 +21,12 @@ namespace Taht.Infrastructure
                    .HasForeignKey(e => e.ServiceId)
                    .IsRequired();
 
-            builder.Property(e => e.BookingTime)
+            builder.HasOne(e => e.Appointment)
+                   .WithOne(e => e.Reservation)
+                   .HasForeignKey<Reservation>(e => e.AppointmentId)
+                   .IsRequired();
+
+            builder.Property(e => e.ReservationDate)
                    .IsRequired();
 
             builder.Property(e => e.GuestCount)

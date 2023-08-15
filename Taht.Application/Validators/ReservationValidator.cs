@@ -10,7 +10,7 @@ namespace Taht.Application
         {
             RuleFor(p => p.UserId).NotNull().WithErrorCode(ErrorCodes.NotNull);
             RuleFor(p => p.ServiceId).NotNull().WithErrorCode(ErrorCodes.NotNull);
-            RuleFor(p => p.BookingTime).NotNull().WithErrorCode(ErrorCodes.NotNull);
+            RuleFor(p => p.ReservationDate).NotNull().WithErrorCode(ErrorCodes.NotNull);
             RuleFor(p => p.GuestCount).NotNull().WithErrorCode(ErrorCodes.NotNull);
         }
     }
