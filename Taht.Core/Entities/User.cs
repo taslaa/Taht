@@ -10,9 +10,6 @@
         public string PasswordSalt { get; set; } = null!;
         public Role Role { get; set; }
 
-        public int? ProfilePhotoId { get; set; }
-        public Photo? ProfilePhoto { get; set; }
-
         public ICollection<Reservation> Reservations { get; set; } = null!;
         public ICollection<Review> Reviews { get; set; } = null!;
     }

@@ -31,11 +31,6 @@ namespace Taht.Infrastructure
 
             builder.Property(e => e.Role)
                    .IsRequired();
-
-            builder.HasOne(e => e.ProfilePhoto)
-                   .WithMany(e => e.Users)
-                   .HasForeignKey(e => e.ProfilePhotoId)
-                   .IsRequired(false);
         }
     }
 }

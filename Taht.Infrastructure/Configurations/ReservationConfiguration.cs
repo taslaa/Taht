@@ -21,15 +21,16 @@ namespace Taht.Infrastructure
                    .HasForeignKey(e => e.ServiceId)
                    .IsRequired();
 
-            builder.HasOne(e => e.Appointment)
-                   .WithOne(e => e.Reservation)
-                   .HasForeignKey<Reservation>(e => e.AppointmentId)
+            builder.Property(e => e.AppointmentTime)
                    .IsRequired();
 
             builder.Property(e => e.ReservationDate)
                    .IsRequired();
 
             builder.Property(e => e.GuestCount)
+                   .IsRequired();
+
+            builder.Property(e => e.Status)
                    .IsRequired();
         }
     }

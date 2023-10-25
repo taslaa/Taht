@@ -12,8 +12,8 @@ using Taht.Infrastructure;
 namespace Taht.Infrastructure.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20230815121429_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20230909201744_updated-reservation-configuration")]
+    partial class updatedreservationconfiguration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,51 +24,6 @@ namespace Taht.Infrastructure.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("Taht.Core.Appointment", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("AppointmentDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("AppointmentTime")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsBooked")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsDeleted")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
-
-                    b.Property<DateTime?>("ModifiedAt")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Appointments");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            AppointmentDate = new DateTime(2023, 2, 1, 0, 0, 0, 0, DateTimeKind.Local),
-                            AppointmentTime = "12:00",
-                            CreatedAt = new DateTime(2023, 2, 1, 0, 0, 0, 0, DateTimeKind.Local),
-                            IsBooked = true,
-                            IsDeleted = false
-                        });
-                });
 
             modelBuilder.Entity("Taht.Core.Photo", b =>
                 {
@@ -110,8 +65,9 @@ namespace Taht.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("AppointmentId")
-                        .HasColumnType("int");
+                    b.Property<string>("AppointmentTime")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -130,6 +86,9 @@ namespace Taht.Infrastructure.Migrations
                     b.Property<DateTime>("ReservationDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<decimal>("ReservationPrice")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<int>("ServiceId")
                         .HasColumnType("int");
 
@@ -140,9 +99,6 @@ namespace Taht.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AppointmentId")
-                        .IsUnique();
 
                     b.HasIndex("ServiceId");
 
@@ -173,9 +129,6 @@ namespace Taht.Infrastructure.Migrations
                     b.Property<DateTime?>("ModifiedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("ReservationId")
-                        .HasColumnType("int");
-
                     b.Property<string>("ReviewComment")
                         .HasColumnType("nvarchar(max)");
 
@@ -186,8 +139,6 @@ namespace Taht.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ReservationId");
 
                     b.HasIndex("UserId");
 
@@ -223,9 +174,6 @@ namespace Taht.Infrastructure.Migrations
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("ServiceType")
-                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -305,12 +253,6 @@ namespace Taht.Infrastructure.Migrations
 
             modelBuilder.Entity("Taht.Core.Reservation", b =>
                 {
-                    b.HasOne("Taht.Core.Appointment", "Appointment")
-                        .WithOne("Reservation")
-                        .HasForeignKey("Taht.Core.Reservation", "AppointmentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Taht.Core.Service", "Service")
                         .WithMany("Reservations")
                         .HasForeignKey("ServiceId")
@@ -323,8 +265,6 @@ namespace Taht.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Appointment");
-
                     b.Navigation("Service");
 
                     b.Navigation("User");
@@ -332,19 +272,11 @@ namespace Taht.Infrastructure.Migrations
 
             modelBuilder.Entity("Taht.Core.Review", b =>
                 {
-                    b.HasOne("Taht.Core.Reservation", "Reservation")
-                        .WithMany("Reviews")
-                        .HasForeignKey("ReservationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Taht.Core.User", "User")
                         .WithMany("Reviews")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Reservation");
 
                     b.Navigation("User");
                 });
@@ -358,20 +290,9 @@ namespace Taht.Infrastructure.Migrations
                     b.Navigation("ProfilePhoto");
                 });
 
-            modelBuilder.Entity("Taht.Core.Appointment", b =>
-                {
-                    b.Navigation("Reservation")
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Taht.Core.Photo", b =>
                 {
                     b.Navigation("Users");
-                });
-
-            modelBuilder.Entity("Taht.Core.Reservation", b =>
-                {
-                    b.Navigation("Reviews");
                 });
 
             modelBuilder.Entity("Taht.Core.Service", b =>

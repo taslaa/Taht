@@ -86,6 +86,7 @@ namespace Taht.Api
             services.AddScoped<IAccessManager, AccessManager>();
             services.AddSingleton<IEnumsService, EnumsService>();
             services.AddSingleton<ICryptoService, CryptoService>();
+            services.AddScoped<IEmailService, EmailService>();
         }
     }
 }

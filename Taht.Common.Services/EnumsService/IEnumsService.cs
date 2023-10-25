@@ -3,6 +3,6 @@
     public interface IEnumsService
     {
         Task<IEnumerable<KeyValuePair<int, string>>> GetRolesAsync();
-        Task<IEnumerable<KeyValuePair<int, string>>> GetServiceTypes();
+        Task<IEnumerable<KeyValuePair<int, string>>> GetReservationStatusesAsync();
     }
 }

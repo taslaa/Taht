@@ -6,8 +6,7 @@
 
         public int ServiceId { get; set; }
 
-        public int AppointmentId { get; set; }
-
+        public string AppointmentTime { get; set; } = null!;
         public DateTime ReservationDate { get; set; }
         public int GuestCount { get; set; }
         public ReservationStatus Status { get; set; }

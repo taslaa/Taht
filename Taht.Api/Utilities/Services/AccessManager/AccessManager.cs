@@ -44,16 +44,6 @@ namespace Taht.Api
         public async Task SignUpAsync(AccessSignUpModel model, CancellationToken cancellationToken = default)
         {
             var upsertDto = _mapper.Map<UserUpsertDto>(model);
-            if (model.ProfilePhoto != null)
-            {
-                await using var memoryStream = new MemoryStream();
-                await model.ProfilePhoto.CopyToAsync(memoryStream, cancellationToken);
-                upsertDto.ProfilePhoto = new PhotoUpsertDto
-                {
-                    Data = memoryStream.ToArray(),
-                    ContentType = model.ProfilePhoto.ContentType
-                };
-            }
 
             await _usersService.AddAsync(upsertDto, cancellationToken);
         }
@@ -81,9 +71,6 @@ namespace Taht.Api
                 Audience = _jwtTokenConfig.Audience,
                 Expires = DateTime.UtcNow.AddMinutes(_jwtTokenConfig.Duration)
             };
-
-            if (user.ProfilePhotoId != null)
-                tokenDescriptor.Subject.AddClaim(new Claim(ClaimNames.ProfilePhotoId, user.ProfilePhotoId.Value.ToString()));
 
             var tokenHandler = new JwtSecurityTokenHandler();
             var token = tokenHandler.CreateToken(tokenDescriptor);

@@ -9,7 +9,7 @@ namespace Taht.Application
             CreateMap<ReservationDto, Reservation>().ReverseMap();
 
             CreateMap<ReservationUpsertDto, Reservation>()
-                .ForMember(u => u.Status, o => o.MapFrom(_ => ReservationStatus.Confirmed));
+                .ForMember(u => u.Status, o => o.MapFrom(_ => ReservationStatus.Pending));
         }
     }
 }

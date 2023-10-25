@@ -10,8 +10,6 @@ namespace Taht.Application
     {
         public static void AddApplication(this IServiceCollection services)
         {
-            services.AddScoped<IAppointmentsService, AppointmentsService>();
-            services.AddScoped<IPhotosService, PhotosService>();
             services.AddScoped<IReservationsService, ReservationsService>();
             services.AddScoped<IReviewsService, ReviewsService>();
             services.AddScoped<IServicesService, ServicesService>();
@@ -20,8 +18,6 @@ namespace Taht.Application
 
         public static void AddValidators(this IServiceCollection services)
         {
-            services.AddScoped<IValidator<AppointmentUpsertDto>, AppointmentValidator>();
-            services.AddScoped<IValidator<PhotoUpsertDto>, PhotoValidator>();
             services.AddScoped<IValidator<ReservationUpsertDto>, ReservationValidator>();
             services.AddScoped<IValidator<ReviewUpsertDto>, ReviewValidator>();
             services.AddScoped<IValidator<ServiceUpsertDto>, ServiceValidator>();

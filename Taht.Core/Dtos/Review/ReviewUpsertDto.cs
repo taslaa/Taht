@@ -4,8 +4,6 @@
     {
         public int UserId { get; set; }
 
-        public int ReservationId { get; set; }
-
         public float ReviewRating { get; set; }
         public string? ReviewComment { get; set; }
         public bool IsAnonymous { get; set; }

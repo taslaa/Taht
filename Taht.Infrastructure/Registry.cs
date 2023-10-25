@@ -8,8 +8,6 @@ namespace Taht.Infrastructure
     {
         public static void AddInfrastructure(this IServiceCollection services)
         {
-            services.AddScoped<IAppointmentsRepository, AppointmentsRepository>();
-            services.AddScoped<IPhotosRepository, PhotosRepository>();
             services.AddScoped<IReservationsRepository, ReservationsRepository>();
             services.AddScoped<IReviewsRepository, ReviewsRepository>();
             services.AddScoped<IServicesRepository, ServicesRepository>();

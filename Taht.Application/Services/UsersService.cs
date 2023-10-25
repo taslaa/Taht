@@ -35,35 +35,15 @@ namespace Taht.Application
             entity.PasswordSalt = _cryptoService.GenerateSalt();
             entity.PasswordHash = _cryptoService.GenerateHash(dto.Password!, entity.PasswordSalt);
 
-            if (dto.ProfilePhoto != null)
-                entity.ProfilePhoto = Mapper.Map<Photo>(dto.ProfilePhoto);
-
             await CurrentRepository.AddAsync(entity, cancellationToken);
             await UnitOfWork.SaveChangesAsync(cancellationToken);
             return Mapper.Map<UserDto>(entity);
         }
-
-        public async Task<int> UpdateProfilePhotoAsync(UserUpsertDto dto, CancellationToken cancellationToken = default)
-        {
-            var user = await CurrentRepository.GetByIdAsync(dto.Id.GetValueOrDefault(), cancellationToken);
-            if (user == null)
-                throw new UserNotFoundException();
-
-            user.ProfilePhoto = Mapper.Map<Photo>(dto.ProfilePhoto);
-
-            CurrentRepository.Update(user);
-            await UnitOfWork.SaveChangesAsync(cancellationToken);
-
-            return Mapper.Map<int>(user.ProfilePhotoId);
-        }
-
         public override async Task<UserDto> UpdateAsync(UserUpsertDto dto, CancellationToken cancellationToken = default)
         {
             var user = await CurrentRepository.GetByIdAsync(dto.Id.Value, cancellationToken);
             if (user == null)
                 throw new UserNotFoundException();
-
-            var existingProfilePhotoId =  user.ProfilePhotoId;
 
             Mapper.Map(dto, user);
 
@@ -71,11 +51,6 @@ namespace Taht.Application
             {
                 user.PasswordSalt = _cryptoService.GenerateSalt();
                 user.PasswordHash = _cryptoService.GenerateHash(dto.Password, user.PasswordSalt);
-            }
-
-            if(dto.ProfilePhoto == null)
-            {
-                user.ProfilePhotoId = existingProfilePhotoId;
             }
 
             CurrentRepository.Update(user);

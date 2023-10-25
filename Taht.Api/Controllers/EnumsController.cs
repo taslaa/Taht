@@ -16,9 +16,5 @@ namespace Taht.Api.Controllers
         [HttpGet("roles")]
         [ResponseCache(VaryByHeader = "User-Agent", Duration = 3600)]
         public async Task<IActionResult> GetRoles() => Ok(await _enumsService.GetRolesAsync());
-
-        [HttpGet("service-types")]
-        [ResponseCache(VaryByHeader = "User-Agent", Duration = 3600)]
-        public async Task<IActionResult> GetServiceTypes() => Ok(await _enumsService.GetServiceTypes());
     }
 }

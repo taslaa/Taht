@@ -8,8 +8,6 @@ namespace Taht.Infrastructure
     {
         private readonly DatabaseContext _databaseContext;
 
-        public readonly IAppointmentsRepository AppointmentsRepository;
-        public readonly IPhotosRepository PhotosRepository;
         public readonly IReservationsRepository ReservationsRepository;
         public readonly IReviewsRepository ReviewsRepository;
         public readonly IServicesRepository ServicesRepository;
@@ -17,8 +15,6 @@ namespace Taht.Infrastructure
 
         public UnitOfWork(
             DatabaseContext databaseContext,
-            IAppointmentsRepository appointmentsRepository,
-            IPhotosRepository photosRepository,
             IReservationsRepository reservationsRepository,
             IReviewsRepository reviewsRepository,
             IServicesRepository servicesRepository,
@@ -26,12 +22,10 @@ namespace Taht.Infrastructure
         {
             _databaseContext = databaseContext;
 
-            PhotosRepository = photosRepository;
             ReservationsRepository = reservationsRepository;
             ReviewsRepository = reviewsRepository;
             ServicesRepository = servicesRepository;
             UsersRepository = usersRepository;
-            AppointmentsRepository = appointmentsRepository;
         }
 
         public async Task<IDbContextTransaction> BeginTransactionAsync(CancellationToken cancellationToken = default)

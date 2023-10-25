@@ -12,7 +12,6 @@ namespace Taht.Application
                 .NotEmpty().WithErrorCode(ErrorCodes.NotEmpty);
             RuleFor(p => p.Description).NotNull().WithErrorCode(ErrorCodes.NotNull)
                 .NotEmpty().WithErrorCode(ErrorCodes.NotEmpty);
-            RuleFor(p => p.ServiceType).NotNull().WithErrorCode(ErrorCodes.NotNull);
             RuleFor(p => p.Price).NotNull().WithErrorCode(ErrorCodes.NotNull);
         }
     }

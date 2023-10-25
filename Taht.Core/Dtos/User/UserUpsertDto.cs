@@ -8,6 +8,5 @@
         public string PhoneNumber { get; set; } = null!;
         public string? Password { get; set; }
         public Role? Role { get; set; }
-        public PhotoUpsertDto? ProfilePhoto { get; set; }
     }
 }

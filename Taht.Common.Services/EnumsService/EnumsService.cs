@@ -6,8 +6,7 @@ namespace Taht.Common.Services
     {
         public Task<IEnumerable<KeyValuePair<int, string>>> GetRolesAsync() => Task.FromResult(GetValues<Role>());
 
-        public Task<IEnumerable<KeyValuePair<int, string>>> GetServiceTypes() => Task.FromResult(GetValues<ServiceType>());
-
+        public Task<IEnumerable<KeyValuePair<int, string>>> GetReservationStatusesAsync() => Task.FromResult(GetValues<ReservationStatus>());
 
         private IEnumerable<KeyValuePair<int, string>> GetValues<T>() where T : Enum
         {

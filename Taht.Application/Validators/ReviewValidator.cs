@@ -9,7 +9,6 @@ namespace Taht.Application
         public ReviewValidator()
         {
             RuleFor(p => p.UserId).NotNull().WithErrorCode(ErrorCodes.NotNull);
-            RuleFor(p => p.ReservationId).NotNull().WithErrorCode(ErrorCodes.NotNull);
             RuleFor(p => p.ReviewRating).NotNull().WithErrorCode(ErrorCodes.NotNull);
             RuleFor(p => p.ReviewComment).NotNull().WithErrorCode(ErrorCodes.NotNull)
                 .NotEmpty().WithErrorCode(ErrorCodes.NotEmpty);

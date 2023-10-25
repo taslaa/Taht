@@ -4,13 +4,20 @@ using Microsoft.AspNetCore.Mvc;
 
 using Taht.Api;
 using Taht.Application;
+using Taht.Common.Services;
 using Taht.Infrastructure;
 
 var webAppBuilder = WebApplication.CreateBuilder(args);
 
+var emailConfig = webAppBuilder.Configuration
+    .GetSection("EmailConfiguration")
+    .Get<EmailConfiguration>() ?? new EmailConfiguration();
+
 var connectionStringConfig = webAppBuilder.BindConfig<ConnectionStringConfig>("ConnectionStrings");
 var jwtTokenConfig = webAppBuilder.BindConfig<JwtTokenConfig>("JwtToken");
 
+
+webAppBuilder.Services.AddSingleton(emailConfig);
 webAppBuilder.Services.AddMapper();
 webAppBuilder.Services.AddValidators();
 webAppBuilder.Services.AddApplication();

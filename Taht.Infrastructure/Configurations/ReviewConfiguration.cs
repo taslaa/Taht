@@ -15,11 +15,6 @@ namespace Taht.Infrastructure
                    .HasForeignKey(e => e.UserId)
                    .IsRequired();
 
-            builder.HasOne(e => e.Reservation)
-                   .WithMany(e => e.Reviews)
-                   .HasForeignKey(e => e.ReservationId)
-                   .IsRequired();
-
             builder.Property(e => e.ReviewRating)
                    .IsRequired();
 

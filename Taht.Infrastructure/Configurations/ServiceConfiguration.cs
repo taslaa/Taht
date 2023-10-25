@@ -16,9 +16,6 @@ namespace Taht.Infrastructure
             builder.Property(e => e.Description)
                    .IsRequired();
 
-            builder.Property(e => e.ServiceType)
-                   .IsRequired();
-
             builder.Property(e => e.Price)
                    .IsRequired();
         }

@@ -105,6 +105,7 @@ namespace Taht.Infrastructure.Migrations
                     ReservationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     GuestCount = table.Column<int>(type: "int", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false),
+                    ReservationPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
@@ -139,7 +140,6 @@ namespace Taht.Infrastructure.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<int>(type: "int", nullable: false),
-                    ReservationId = table.Column<int>(type: "int", nullable: false),
                     ReviewRating = table.Column<float>(type: "real", nullable: false),
                     ReviewComment = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IsAnonymous = table.Column<bool>(type: "bit", nullable: false),
@@ -151,17 +151,11 @@ namespace Taht.Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_Reviews", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Reviews_Reservations_ReservationId",
-                        column: x => x.ReservationId,
-                        principalTable: "Reservations",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
                         name: "FK_Reviews_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.InsertData(
@@ -191,11 +185,6 @@ namespace Taht.Infrastructure.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Reviews_ReservationId",
-                table: "Reviews",
-                column: "ReservationId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Reviews_UserId",
                 table: "Reviews",
                 column: "UserId");
@@ -210,10 +199,10 @@ namespace Taht.Infrastructure.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Reviews");
+                name: "Reservations");
 
             migrationBuilder.DropTable(
-                name: "Reservations");
+                name: "Reviews");
 
             migrationBuilder.DropTable(
                 name: "Appointments");

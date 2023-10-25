@@ -1,4 +1,5 @@
-﻿using Taht.Core;
+﻿using Microsoft.EntityFrameworkCore;
+using Taht.Core;
 using Taht.Infrastructure.Interfaces;
 
 namespace Taht.Infrastructure

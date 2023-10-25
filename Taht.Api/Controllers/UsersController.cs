@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Mvc;
 
 using Taht.Core;
 using Taht.Application.Interfaces;
-using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
 using Taht.Infrastructure.Interfaces;
 
@@ -29,16 +28,6 @@ namespace Taht.Api.Controllers
             try
             {
                 var upsertDto = _mapper.Map<UserUpsertDto>(model);
-                if (model.ProfilePhoto != null)
-                {
-                    await using var memoryStream = new MemoryStream();
-                    await model.ProfilePhoto.CopyToAsync(memoryStream, cancellationToken);
-                    upsertDto.ProfilePhoto = new PhotoUpsertDto
-                    {
-                        Data = memoryStream.ToArray(),
-                        ContentType = model.ProfilePhoto.ContentType
-                    };
-                }
 
                 var user = await Service.AddAsync(upsertDto, cancellationToken);
 
@@ -57,16 +46,6 @@ namespace Taht.Api.Controllers
             try
             {
                 var upsertDto = _mapper.Map<UserUpsertDto>(model);
-                if (model.ProfilePhoto != null)
-                {
-                    await using var memoryStream = new MemoryStream();
-                    await model.ProfilePhoto.CopyToAsync(memoryStream, cancellationToken);
-                    upsertDto.ProfilePhoto = new PhotoUpsertDto
-                    {
-                        Data = memoryStream.ToArray(),
-                        ContentType = model.ProfilePhoto.ContentType
-                    };
-                }
 
                 await Service.UpdateAsync(upsertDto, cancellationToken);
 
@@ -77,15 +56,6 @@ namespace Taht.Api.Controllers
                 Logger.LogError(e, "Error while updating user info.");
                 return ValidationResult(e.Errors);
             }
-        }
-
-        [HttpPut("PutProfilePhoto")]
-        public async Task<IActionResult> PutProfilePhoto([FromForm] UserUpdateProfilePhotoModel model, CancellationToken cancellationToken = default)
-        {
-            var upsertDto = _mapper.Map<UserUpsertDto>(model);
-            var photo = await Service.UpdateProfilePhotoAsync(upsertDto, cancellationToken);
-
-            return Ok(photo);
         }
     }
 }

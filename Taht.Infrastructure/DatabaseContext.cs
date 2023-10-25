@@ -6,8 +6,6 @@ namespace Taht.Infrastructure
 {
     public partial class DatabaseContext : DbContext
     {
-        public DbSet<Appointment> Appointments { get; set; } = null!;
-        public DbSet<Photo> Photos { get; set; } = null!;
         public DbSet<Reservation> Reservations { get; set; } = null!;
         public DbSet<Review> Reviews { get; set; } = null!;
         public DbSet<Service> Services { get; set; } = null!;
